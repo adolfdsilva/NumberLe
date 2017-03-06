@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "589593714917",
+    "firebase_url": "https://numberle-da3fd.firebaseio.com",
+    "project_id": "numberle-da3fd",
+    "storage_bucket": "numberle-da3fd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:589593714917:android:a74a8393a66b5c7b",
+        "android_client_info": {
+          "package_name": "audi.com.numberle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "589593714917-6nfhsamasjtf6rsuiscpg1v0d1j07po9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "audi.com.numberle",
+            "certificate_hash": "b66e90a7aa9c0971e0d6ceb4638a488cbe3f408c"
+          }
+        },
+        {
+          "client_id": "589593714917-91pt1shoe07c9m0b7drvujqdc4tai3ct.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjIUrxwlRh3gS6dAnt6tJm7gP1bfsHXlw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "589593714917-91pt1shoe07c9m0b7drvujqdc4tai3ct.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
