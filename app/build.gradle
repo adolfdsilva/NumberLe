@@ -20,6 +20,7 @@ android {
 }
 
 dependencies {
+    compile project(':smartloginlibrary-v0.5beta')
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -29,7 +30,16 @@ dependencies {
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.google.firebase:firebase-messaging:10.0.1'
     compile 'com.google.firebase:firebase-auth:10.0.1'
+    //Facebook SDK
+    compile 'com.facebook.android:facebook-android-sdk:4.0.1'
+    //Google Play Services
+    compile 'com.google.android.gms:play-services:10.0.1'
+    compile 'com.android.support:design:25.1.0'
+    //GSON library
+    compile 'com.google.code.gson:gson:2.7'
+
     testCompile 'junit:junit:4.12'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
