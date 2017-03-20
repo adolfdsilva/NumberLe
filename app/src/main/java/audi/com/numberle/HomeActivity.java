@@ -3,7 +3,6 @@ package audi.com.numberle;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,15 +19,39 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import audi.com.numberle.utils.Constants;
+import br.com.mauker.materialsearchview.MaterialSearchView;
+
 public class HomeActivity extends BaseActivity {
 
 
     private DrawerLayout mDrawerLayout;
+    private MaterialSearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        init();
+
+
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Constants.debug(newText);
+                return false;
+            }
+        });
+    }
+
+    private void init() {
+        searchView = (MaterialSearchView) findViewById(R.id.searchView);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -53,20 +76,19 @@ public class HomeActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                searchView.openSearch();
             }
         });
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
-
 
 
     @Override
@@ -98,6 +120,16 @@ public class HomeActivity extends BaseActivity {
                         return true;
                     }
                 });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (searchView.isOpen()) {
+            // Close the search on the back button press.
+            searchView.closeSearch();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     static class Adapter extends FragmentPagerAdapter {
