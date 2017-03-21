@@ -13,4 +13,10 @@
     <string name="button_favorites">Favorites</string>
     <string name="button_cancel">Cancel</string>
     <string name="menu_cart">Cart</string>
+    <string name="text_register">Register</string>
+    <string name="text_nick_name">Nick Name</string>
+    <string name="button_signIn">SignIn</string>
+    <string name="button_signUp">SignUp</string>
+    <string name="text_sign_in_msg">Sign in with below</string>
+    <string name="button_register">Register</string>
 </resources>
