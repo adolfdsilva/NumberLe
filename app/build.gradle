@@ -10,11 +10,13 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
     }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -44,6 +46,7 @@ dependencies {
     compile 'com.mikepenz:iconics-core:2.8.1@aar'
     compile 'de.hdodenhof:circleimageview:2.1.0'
 
+    compile 'com.android.support:multidex:1.0.1'
     testCompile 'junit:junit:4.12'
 
 }

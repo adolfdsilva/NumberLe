@@ -20,7 +20,7 @@
         android:layout_marginTop="96dp">
 
         <EditText
-            android:id="@+id/username"
+            android:id="@+id/tvEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/tv_username"
@@ -36,7 +36,7 @@
         android:layout_marginTop="8dp">
 
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/tvPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/tv_password"
