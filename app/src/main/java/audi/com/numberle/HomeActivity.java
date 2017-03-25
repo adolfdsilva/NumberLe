@@ -1,5 +1,6 @@
 package audi.com.numberle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -15,18 +16,28 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import audi.com.numberle.entity.Shop;
 import audi.com.numberle.utils.Constants;
 import br.com.mauker.materialsearchview.MaterialSearchView;
+import br.com.mauker.materialsearchview.db.HistoryContract;
 
 public class HomeActivity extends BaseActivity {
 
 
     private DrawerLayout mDrawerLayout;
     private MaterialSearchView searchView;
+
+    private List<Object> shops = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,17 +46,34 @@ public class HomeActivity extends BaseActivity {
 
         init();
 
-
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+        Query query = mDatabase.getRef().child("Shops");
+        query.addValueEventListener(new ValueEventListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot shopSnapshot : dataSnapshot.getChildren()) {
+                    Shop shop = shopSnapshot.getValue(Shop.class);
+                    shops.add(shop);
+                }
+                searchView.addSuggestions(shops);
+                Constants.debug(shops.toString());
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                Constants.debug(newText);
-                return false;
+            public void onCancelled(DatabaseError databaseError) {
+                Constants.debug(databaseError.getMessage());
+
+            }
+        });
+
+        searchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String query = (String) parent.getAdapter().getItem(position);
+                Constants.debug("Submitted Query: " + query);
+                Intent intent = new Intent(getApplicationContext(), ShopDetailActivity.class);
+                intent.putExtra(HistoryContract.HistoryEntry.COLUMN_JSON_OBJECT, query);
+                startActivity(intent);
+                searchView.closeSearch();
             }
         });
     }

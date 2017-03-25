@@ -4,29 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:background="@color/white_ish"
     android:padding="16dp">
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
 
         <TextView
-            android:id="@+id/tvShopName"
+            android:id="@+id/tvProductName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Jawed Habib" />
+            tools:text="Hair Spa" />
 
         <TextView
-            android:id="@+id/tvShopDesc"
+            android:id="@+id/tvProductETAPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Hair Stylist" />
+            tools:text="Rs.1200     40min" />
 
     </LinearLayout>
 

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import audi.com.numberle.R;
+import audi.com.numberle.entity.Shop;
 
 /**
  * Created by Audi on 20/03/17.
@@ -21,35 +22,38 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     private final TypedValue mTypedValue = new TypedValue();
     private int mBackground;
-    private List<String> mValues;
+    private List<Shop.Product> mValues;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public String mBoundString;
 
         public final View mView;
-        public final TextView tvShopName;
-        public final TextView tvShopDesc;
+        public final TextView tvProductName;
+        public final TextView tvProductETAPrice;
         public final ImageButton bAdd;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            tvShopName = (TextView) view.findViewById(R.id.tvShopName);
-            tvShopDesc = (TextView) view.findViewById(R.id.tvShopDesc);
+            tvProductName = (TextView) view.findViewById(R.id.tvProductName);
+            tvProductETAPrice = (TextView) view.findViewById(R.id.tvProductETAPrice);
             bAdd = (ImageButton) view.findViewById(R.id.bAdd);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + tvShopName.getText();
+            return super.toString() + " '" + tvProductName.getText();
         }
     }
 
-    public String getValueAt(int position) {
+    public Shop.Product getValueAt(int position) {
         return mValues.get(position);
     }
 
-    public ProductAdapter(Context context, List<String> items) {
+    public void setmValues(List<Shop.Product> mValues) {
+        this.mValues = mValues;
+    }
+
+    public ProductAdapter(Context context, List<Shop.Product> items) {
         context.getTheme().resolveAttribute(R.attr.selectableItemBackground, mTypedValue, true);
         mBackground = mTypedValue.resourceId;
         mValues = items;
@@ -58,19 +62,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.layout_shops_item, parent, false);
+                .inflate(R.layout.layout_product_item, parent, false);
         view.setBackgroundResource(mBackground);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mBoundString = mValues.get(position);
-        holder.tvShopName.setText(mValues.get(position));
+        Shop.Product product = mValues.get(position);
+        holder.tvProductName.setText(product.getProductName());
+        holder.tvProductETAPrice.setText(product.getPrice() + "\t" + product.getETA());
 
         holder.bAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
             }
         });
     }

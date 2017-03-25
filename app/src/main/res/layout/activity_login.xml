@@ -24,8 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/tv_username"
-            android:inputType="textEmailAddress"
-            android:textSize="24sp" />
+            android:inputType="textEmailAddress" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -47,65 +46,64 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/bSignIn"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
+        android:layout_weight="1"
+        android:text="@string/button_signIn" />
 
-        <Button
-            android:id="@+id/bSignIn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/button_signIn" />
-
-        <Button
-            android:id="@+id/bSignUp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/button_signUp" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom|center"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="@string/text_sign_in_msg"
-            android:textColor="@android:color/background_light"
-            android:textSize="20sp"
-            android:textStyle="italic" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/bGoogle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:padding="16dp"
-                android:src="@drawable/google_logo" />
-
-            <ImageButton
-                android:id="@+id/bFacebook"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:padding="16dp"
-                android:src="@drawable/facebook_logo" />
-
-        </LinearLayout>
-    </LinearLayout>
+    <Button
+        android:id="@+id/bSignUp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/button_signUp" />
 
 </LinearLayout>
+
+
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:gravity="bottom|center"
+android:orientation="vertical">
+
+<TextView
+    android:id="@+id/textView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:text="@string/text_sign_in_msg"
+    android:textColor="@android:color/background_light"
+    android:textSize="20sp"
+    android:textStyle="italic" />
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/bGoogle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:padding="16dp"
+        android:src="@drawable/google_logo" />
+
+    <ImageButton
+        android:id="@+id/bFacebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:padding="16dp"
+        android:src="@drawable/facebook_logo" />
+
+</LinearLayout>
+</LinearLayout>
+
+    </LinearLayout>
