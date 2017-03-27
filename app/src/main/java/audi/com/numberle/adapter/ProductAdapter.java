@@ -23,6 +23,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private final TypedValue mTypedValue = new TypedValue();
     private int mBackground;
     private List<Shop.Product> mValues;
+    private OnProductChange callback;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -69,14 +70,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Shop.Product product = mValues.get(position);
+        final Shop.Product product = mValues.get(position);
         holder.tvProductName.setText(product.getProductName());
         holder.tvProductETAPrice.setText(product.getPrice() + "\t" + product.getETA());
 
         holder.bAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                callback.onProductAdded(product);
             }
         });
     }
@@ -84,5 +85,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    public void setCallback(OnProductChange callback) {
+        this.callback = callback;
+    }
+
+    public interface OnProductChange {
+        void onProductAdded(Shop.Product product);
+        void onProductRemoved(Shop.Product product);
     }
 }
