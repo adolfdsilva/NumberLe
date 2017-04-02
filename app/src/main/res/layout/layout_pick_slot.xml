@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <ImageView
+        android:layout_width="@dimen/image_shop_logo"
+        android:layout_height="@dimen/image_shop_logo"
+        android:src="@drawable/ic_action_clock" />
+
+    <TextView
+        android:id="@+id/tvSlot"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_weight="1"
+        tools:text="1:30 - 3:30" />
+
+    <Button
+        android:id="@+id/bBook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="@string/button_book" />
+
+</LinearLayout>

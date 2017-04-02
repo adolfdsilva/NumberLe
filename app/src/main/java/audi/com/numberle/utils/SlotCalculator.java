@@ -28,9 +28,19 @@ public class SlotCalculator {
     private static DatabaseReference mDatabase;
     private static SlotCallback slotCallback;
     private static List<String> slots = new ArrayList<>();
+    private static List<AppointmentUser> appointments = new ArrayList<>();
+
 
     static {
         mDatabase = FirebaseDatabase.getInstance().getReference();
+//        AppointmentUser user = new AppointmentUser();
+//        user.ETA = 90;
+//        user.slot = "12:30";
+//        AppointmentUser user2 = new AppointmentUser();
+//        user2.ETA = 30;
+//        user2.slot = "15:30";
+//        appointments.add(user);
+//        appointments.add(user2);
     }
 
     public void setSlotCallback(SlotCallback slotCallback) {
@@ -44,6 +54,7 @@ public class SlotCalculator {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot user : dataSnapshot.getChildren()) {
                     AppointmentUser appointmentUser = user.getValue(AppointmentUser.class);
+                    appointments.add(appointmentUser);
                 }
                 if (slotCallback != null)
                     slotCallback.gotSlots(null);
@@ -68,10 +79,37 @@ public class SlotCalculator {
         long parts = Mins / ETA;
         Calendar cal = Calendar.getInstance();
         cal.setTime(Date1);
-        for (int i = 0; i < parts; i++) {
-            String fromTime = format.format(cal.getTime());
+        int j = 0;
+        boolean flag = true;
+        AppointmentUser appointmentUser = null;
+        for (int i = 0; i < parts ; i++) {
+            //Calculate shop booked hours
+            if (flag && appointments.size() > j) {
+                appointmentUser = appointments.get(j++);
+                flag = false;
+            }
+            Date appointDate1 = format.parse(appointmentUser.slot);
+            Calendar appointDate2 = Calendar.getInstance();
+            appointDate2.setTime(appointDate1);
+            appointDate2.add(Calendar.MINUTE, appointmentUser.ETA);
+
+
             cal.add(Calendar.MINUTE, ETA);
+            //check if the slot lies between already booked slots
+            while (cal.getTime().getTime() > appointDate1.getTime() && cal.getTime().getTime() <= appointDate2.getTime().getTime()) {
+                //if so then goto next slot
+                cal.add(Calendar.MINUTE, ETA);
+                flag = true;
+            }
             String toTime = format.format(cal.getTime());
+            Calendar tempCal = Calendar.getInstance();
+            tempCal.setTime(cal.getTime());
+            tempCal.add(Calendar.MINUTE,-ETA);
+            String fromTime = format.format(tempCal.getTime());
+
+            if (cal.getTime().getTime() > Date2.getTime())
+                break;
+
             slots.add(fromTime + "-" + toTime);
         }
 
@@ -80,7 +118,7 @@ public class SlotCalculator {
 
     public static void main(String args[]) {
         try {
-            setSlots("8:00-15:00", 30);
+            setSlots("8:00-14:30", 30);
         } catch (ParseException e) {
             e.printStackTrace();
         }
