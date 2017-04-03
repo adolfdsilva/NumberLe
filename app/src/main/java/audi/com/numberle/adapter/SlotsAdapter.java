@@ -6,7 +6,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -24,17 +24,18 @@ public class SlotsAdapter extends RecyclerView.Adapter<SlotsAdapter.ViewHolder> 
     private List<String> mValues;
     private OnSlot callback;
 
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public final View mView;
         public final TextView tvSlot;
-        public final ImageButton bBook;
+        public final Button bBook;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             tvSlot = (TextView) view.findViewById(R.id.tvSlot);
-            bBook = (ImageButton) view.findViewById(R.id.bAdd);
+            bBook = (Button) view.findViewById(R.id.bBook);
         }
 
         @Override
@@ -73,7 +74,8 @@ public class SlotsAdapter extends RecyclerView.Adapter<SlotsAdapter.ViewHolder> 
         holder.bBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.bookSlot(slot);
+                if (callback != null)
+                    callback.bookSlot(slot);
             }
         });
     }

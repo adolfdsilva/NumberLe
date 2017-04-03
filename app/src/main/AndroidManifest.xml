@@ -32,6 +32,7 @@
         <activity android:name=".HomeActivity" />
         <activity android:name=".ShopDetailActivity" />
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".PickSlotActivity" />
     </application>
 
 </manifest>

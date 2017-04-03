@@ -1,5 +1,6 @@
 package audi.com.numberle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -65,8 +66,22 @@ public class ShopDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 mDatabase.child("Users").child(user.getUid()).child(shop.getName()).setValue(userProducts);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(Shop.class.getSimpleName(), shop);
+                bundle.putInt("ETA", getETA());
+                Intent intent = new Intent(getApplicationContext(), PickSlotActivity.class);
+                intent.putExtra(Constants.SLOT_EXTRAS, bundle);
+                startActivity(intent);
             }
         });
+    }
+
+    private int getETA() {
+        int eta = 0;
+        for (Shop.Product product : userProducts)
+            eta += product.getETA();
+
+        return eta;
     }
 
     private void init() {
