@@ -24,8 +24,12 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import audi.com.numberle.entity.Appointment;
+import audi.com.numberle.entity.AppointmentUser;
 import audi.com.numberle.entity.Shop;
 import audi.com.numberle.utils.Constants;
 import br.com.mauker.materialsearchview.MaterialSearchView;
@@ -36,8 +40,11 @@ public class HomeActivity extends BaseActivity {
 
     private DrawerLayout mDrawerLayout;
     private MaterialSearchView searchView;
-
     private List<Object> shops = new ArrayList<>();
+    private Calendar now;
+    private List<Appointment> today = new ArrayList<>();
+    private List<Appointment> past = new ArrayList<>();
+    private List<Appointment> upcomming = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +53,10 @@ public class HomeActivity extends BaseActivity {
 
         init();
 
-        Query query = mDatabase.getRef().child("Shops");
+        setUpUserAppointments();
+
+
+        Query query = mDatabase.getRef().child(Constants.SHOP);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -54,6 +64,7 @@ public class HomeActivity extends BaseActivity {
                     Shop shop = shopSnapshot.getValue(Shop.class);
                     shops.add(shop);
                 }
+                searchView.clearAll();
                 searchView.addSuggestions(shops);
                 Constants.debug(shops.toString());
             }
@@ -78,7 +89,34 @@ public class HomeActivity extends BaseActivity {
         });
     }
 
+    private void setUpUserAppointments() {
+        Query userQuery = mDatabase.getRef().child(Constants.USERS).child(user.getUid());
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot user : dataSnapshot.getChildren()) {
+                    AppointmentUser appointmentUser = user.getValue(AppointmentUser.class);
+                    Date date = new Date(appointmentUser.getDate());
+
+                    if (now.getTime().before(date)) {
+                        past.add(appointmentUser);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void init() {
+        now = Calendar.getInstance();
+        now.set(Calendar.HOUR_OF_DAY, 0);
+        now.set(Calendar.MINUTE, 0);
+        now.set(Calendar.SECOND, 0);
+
         searchView = (MaterialSearchView) findViewById(R.id.searchView);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

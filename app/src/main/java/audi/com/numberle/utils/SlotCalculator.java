@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import audi.com.numberle.entity.AppointmentUser;
@@ -32,27 +33,19 @@ public class SlotCalculator {
     private SlotCallback slotCallback;
     private Shop shop;
     private List<String> slots = new ArrayList<>();
-    private List<AppointmentUser> appointments = new ArrayList<>();
+    private HashMap<Date, List<AppointmentUser>> appointments = new HashMap<>();
     private int ETA;
+    private Date date;
 
-    public SlotCalculator(Shop shop, int ETA, SlotCallback slotCallback, DatabaseReference database) {
+    public SlotCalculator(Shop shop, int ETA,Date date, SlotCallback slotCallback, DatabaseReference database) {
         this.shop = shop;
         this.ETA = ETA;
+        this.date = date;
         this.mDatabase = database;
         this.slotCallback = slotCallback;
 
     }
 
-    static {
-//        AppointmentUser user = new AppointmentUser();
-//        user.ETA = 90;
-//        user.slot = "12:30";
-//        AppointmentUser user2 = new AppointmentUser();
-//        user2.ETA = 30;
-//        user2.slot = "15:30";
-//        appointments.add(user);
-//        appointments.add(user2);
-    }
 
     public void getSlots() {
         Query query = mDatabase.child(Constants.APPOINTMENTS).child(shop.getName());
@@ -61,12 +54,17 @@ public class SlotCalculator {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot user : dataSnapshot.getChildren()) {
                     AppointmentUser appointmentUser = user.getValue(AppointmentUser.class);
-                    appointments.add(appointmentUser);
+                    Date date = new Date(appointmentUser.getDate());
+                    List<AppointmentUser> appointmentUsersList = appointments.get(date);
+                    if (appointmentUsersList == null)
+                        appointmentUsersList = new ArrayList<>();
+                    appointmentUsersList.add(appointmentUser);
+                    appointments.put(date, appointmentUsersList);
                 }
                 try {
                     setSlots();
                 } catch (ParseException e) {
-                    Constants.exception("Error Parsing Date",e);
+                    Constants.exception("Error Parsing Date", e);
                 }
                 if (slotCallback != null)
                     slotCallback.gotSlots(slots);
@@ -80,6 +78,10 @@ public class SlotCalculator {
     }
 
     public void setSlots() throws ParseException {
+        List<AppointmentUser> appointmentUsers = appointments.get(date);
+        if (appointmentUsers == null)
+            appointmentUsers = new ArrayList<>();
+
         String hours[] = shop.getOperation_hours().split("-");
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");
         Date Date1 = format.parse(hours[0]);
@@ -95,8 +97,8 @@ public class SlotCalculator {
         AppointmentUser appointmentUser = null;
         for (int i = 0; i < parts; i++) {
             //Calculate shop booked hours
-            if (flag && appointments.size() > j) {
-                appointmentUser = appointments.get(j++);
+            if (flag && appointmentUsers.size() > j) {
+                appointmentUser = appointmentUsers.get(j++);
                 flag = false;
             }
             Date appointDate1 = null;

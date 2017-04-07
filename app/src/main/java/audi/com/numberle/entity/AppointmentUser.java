@@ -7,6 +7,7 @@ package audi.com.numberle.entity;
 public class AppointmentUser {
     private int ETA;
     private String slot;
+    private long date;
 
     public int getETA() {
         return ETA;
@@ -22,5 +23,13 @@ public class AppointmentUser {
 
     public void setSlot(String slot) {
         this.slot = slot;
+    }
+
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
     }
 }

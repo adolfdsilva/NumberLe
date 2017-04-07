@@ -14,6 +14,8 @@ public class Constants {
     private static final String TAG = "Number-le";
     public static final String SLOT_EXTRAS = "slot_extras";
     public static final String APPOINTMENTS = "Appointments";
+    public static final String USERS = "Users";
+    public static final String SHOP = "Shops";
 
     public static void debug(String msg) {
         Log.d(TAG, "" + msg);
