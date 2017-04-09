@@ -6,7 +6,8 @@ package audi.com.numberle.entity;
 
 public class Appointment {
     private String shopName;
-    private Shop.Product product;
+    private AppointmentUser appointment;
+
 
     public String getShopName() {
         return shopName;
@@ -16,11 +17,12 @@ public class Appointment {
         this.shopName = shopName;
     }
 
-    public Shop.Product getProduct() {
-        return product;
+
+    public AppointmentUser getAppointment() {
+        return appointment;
     }
 
-    public void setProduct(Shop.Product product) {
-        this.product = product;
+    public void setAppointment(AppointmentUser appointment) {
+        this.appointment = appointment;
     }
 }

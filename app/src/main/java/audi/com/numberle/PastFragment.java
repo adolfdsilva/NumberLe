@@ -8,9 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Arrays;
+import java.util.List;
 
-import audi.com.numberle.adapter.ShopsAdapter;
+import audi.com.numberle.adapter.AppointmentAdapter;
+import audi.com.numberle.entity.Appointment;
 
 /**
  * Created by Audi on 13/03/17.
@@ -19,6 +20,12 @@ import audi.com.numberle.adapter.ShopsAdapter;
 public class PastFragment extends BaseFragment {
 
     private RecyclerView rvShops;
+    private List<Appointment> past;
+
+
+    public PastFragment(List<Appointment> past) {
+        this.past = past;
+    }
 
     @Nullable
     @Override
@@ -30,7 +37,8 @@ public class PastFragment extends BaseFragment {
 
     private void setupRecyclerView(RecyclerView rvShops) {
         rvShops.setLayoutManager(new LinearLayoutManager(rvShops.getContext()));
-        rvShops.setAdapter(new ShopsAdapter(getActivity(),
-                Arrays.asList("Jawed Habib", "Pravin's Barber Shop")));
+        rvShops.setAdapter(new AppointmentAdapter(getActivity(), past, AppointmentAdapter.PAST));
     }
+
+
 }

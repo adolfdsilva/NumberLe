@@ -37,7 +37,7 @@ public class SlotCalculator {
     private int ETA;
     private Date date;
 
-    public SlotCalculator(Shop shop, int ETA,Date date, SlotCallback slotCallback, DatabaseReference database) {
+    public SlotCalculator(Shop shop, int ETA, Date date, SlotCallback slotCallback, DatabaseReference database) {
         this.shop = shop;
         this.ETA = ETA;
         this.date = date;
@@ -91,7 +91,12 @@ public class SlotCalculator {
 
         long parts = Mins / ETA;
         Calendar cal = Calendar.getInstance();
-        cal.setTime(Date1);
+
+        if (cal.get(Calendar.HOUR) + 2 < Date1.getHours())
+            cal.setTime(Date1);
+        else
+            cal.add(Calendar.HOUR_OF_DAY, 2);
+
         int j = 0;
         boolean flag = true;
         AppointmentUser appointmentUser = null;
@@ -112,6 +117,7 @@ public class SlotCalculator {
             }
 
             cal.add(Calendar.MINUTE, ETA);
+
             //check if the slot lies between already booked slots
             while ((appointDate1 != null) && cal.getTime().getTime() > appointDate1.getTime() && cal.getTime().getTime() <= appointDate2.getTime().getTime()) {
                 //if so then goto next slot
@@ -132,13 +138,22 @@ public class SlotCalculator {
 
         System.out.print(slots.toString());
     }
-
-//    public static void main(String args[]) {
-//        try {
-//            setSlots("8:00-14:30", 30);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
+//
+//    public static void main(String args[]) throws ParseException {
+//        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+//        Date Date1 = format.parse("8:00");
+//
+//        Calendar cal = Calendar.getInstance();
+//        System.out.println(cal.getTimeInMillis());
+//        cal.setTime(Date1);
+//
+//        Calendar now = Calendar.getInstance();
+//        now.set(Calendar.YEAR, cal.get(Calendar.YEAR));
+//        now.set(Calendar.MONTH, cal.get(Calendar.MONTH));
+//        now.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
+//
+//        System.out.println(cal.get(Calendar.HOUR_OF_DAY) + " " + now.get(Calendar.HOUR_OF_DAY));
+//
 //    }
 
     public interface SlotCallback {

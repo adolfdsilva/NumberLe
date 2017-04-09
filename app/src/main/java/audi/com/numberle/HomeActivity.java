@@ -25,7 +25,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import audi.com.numberle.entity.Appointment;
@@ -41,10 +40,13 @@ public class HomeActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
     private MaterialSearchView searchView;
     private List<Object> shops = new ArrayList<>();
-    private Calendar now;
+    private Calendar now, tomorrow;
     private List<Appointment> today = new ArrayList<>();
     private List<Appointment> past = new ArrayList<>();
     private List<Appointment> upcomming = new ArrayList<>();
+    private Adapter fragmentAdapter;
+    private ViewPager viewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,14 +96,26 @@ public class HomeActivity extends BaseActivity {
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot user : dataSnapshot.getChildren()) {
-                    AppointmentUser appointmentUser = user.getValue(AppointmentUser.class);
-                    Date date = new Date(appointmentUser.getDate());
-
-                    if (now.getTime().before(date)) {
-                        past.add(appointmentUser);
+                for (DataSnapshot shopAppointments : dataSnapshot.getChildren()) {
+                    String shopName = shopAppointments.getKey();
+                    Appointment appointment = new Appointment();
+                    appointment.setShopName(shopName);
+                    for (DataSnapshot appointSnapShot : shopAppointments.getChildren()) {
+                        AppointmentUser appointmentUser = appointSnapShot.getValue(AppointmentUser.class);
+                        appointment.setAppointment(appointmentUser);
+                        Calendar date = Calendar.getInstance();
+                        date.setTimeInMillis(appointmentUser.getDate());
+                        if (date.compareTo(now) < 0) {
+                            past.add(appointment);
+                        } else if (date.compareTo(tomorrow) > 0) {
+                            upcomming.add(appointment);
+                        } else {
+                            today.add(appointment);
+                        }
                     }
                 }
+
+                setupViewPager();
             }
 
             @Override
@@ -113,9 +127,10 @@ public class HomeActivity extends BaseActivity {
 
     private void init() {
         now = Calendar.getInstance();
-        now.set(Calendar.HOUR_OF_DAY, 0);
-        now.set(Calendar.MINUTE, 0);
-        now.set(Calendar.SECOND, 0);
+        tomorrow = Calendar.getInstance();
+        tomorrow.set(Calendar.HOUR_OF_DAY, 23);
+        tomorrow.set(Calendar.MINUTE, 59);
+        tomorrow.set(Calendar.SECOND, 59);
 
         searchView = (MaterialSearchView) findViewById(R.id.searchView);
 
@@ -133,10 +148,7 @@ public class HomeActivity extends BaseActivity {
             setupDrawerContent(navigationView);
         }
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        if (viewPager != null) {
-            setupViewPager(viewPager);
-        }
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -168,12 +180,15 @@ public class HomeActivity extends BaseActivity {
     }
 
 
-    private void setupViewPager(ViewPager viewPager) {
-        Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new TodayFragment(), "Today");
-        adapter.addFragment(new UpcomingFragment(), "Upcoming");
-        adapter.addFragment(new PastFragment(), "Past");
-        viewPager.setAdapter(adapter);
+    private void setupViewPager() {
+
+        fragmentAdapter = new Adapter(getSupportFragmentManager());
+
+        fragmentAdapter.addFragment(new TodayFragment(today), "Today");
+        fragmentAdapter.addFragment(new UpcomingFragment(upcomming), "Upcoming");
+        fragmentAdapter.addFragment(new PastFragment(past), "Past");
+
+        viewPager.setAdapter(fragmentAdapter);
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -198,11 +213,11 @@ public class HomeActivity extends BaseActivity {
         }
     }
 
-    static class Adapter extends FragmentPagerAdapter {
+    private static class Adapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();
         private final List<String> mFragmentTitles = new ArrayList<>();
 
-        public Adapter(FragmentManager fm) {
+        Adapter(FragmentManager fm) {
             super(fm);
         }
 

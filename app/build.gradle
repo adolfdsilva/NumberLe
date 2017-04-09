@@ -39,6 +39,7 @@ dependencies {
     compile 'com.android.support:support-v4:25.2.0'
     compile 'com.android.support:support-v13:25.2.0'
     compile 'com.android.support:design:25.2.0'
+    dependencies { compile 'com.android.support:support-annotations:24.2.0' }
 
     //others
     compile 'com.facebook.android:facebook-android-sdk:4.0.1'

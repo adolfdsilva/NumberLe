@@ -65,7 +65,6 @@ public class ShopDetailActivity extends BaseActivity {
         findViewById(R.id.bDone).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDatabase.child("Users").child(user.getUid()).child(shop.getName()).setValue(userProducts);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Shop.class.getSimpleName(), shop);
                 bundle.putInt("ETA", getETA());
