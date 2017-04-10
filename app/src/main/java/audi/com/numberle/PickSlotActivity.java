@@ -33,6 +33,8 @@ public class PickSlotActivity extends BaseActivity implements SlotCalculator.Slo
     private int ETA;
     private Calendar date;
     private MenuItem mDate;
+    private SlotCalculator slotCalculator;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class PickSlotActivity extends BaseActivity implements SlotCalculator.Slo
         shop = bundle.getParcelable(Shop.class.getSimpleName());
         ETA = bundle.getInt("ETA");
 
-        SlotCalculator slotCalculator = new SlotCalculator(shop, ETA, date.getTime(), PickSlotActivity.this, mDatabase);
+        slotCalculator = new SlotCalculator(shop, ETA, date, PickSlotActivity.this, mDatabase);
         slotCalculator.getSlots();
     }
 
@@ -81,9 +83,14 @@ public class PickSlotActivity extends BaseActivity implements SlotCalculator.Slo
     }
 
     @Override
-    public void gotSlots(List<String> slots) {
-        adapter.setmValues(slots);
-        adapter.notifyDataSetChanged();
+    public void gotSlots(List<String> slots, boolean isClosed) {
+        if (!isClosed) {
+            adapter.setmValues(slots);
+            adapter.notifyDataSetChanged();
+        } else {
+            //shop closed change date or book next day date
+        }
+
     }
 
     @Override
@@ -117,5 +124,7 @@ public class PickSlotActivity extends BaseActivity implements SlotCalculator.Slo
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         date.set(year, monthOfYear, dayOfMonth);
         mDate.setTitle(dayOfMonth + "");
+        slotCalculator.setDate(date);
+        slotCalculator.getSlots();
     }
 }

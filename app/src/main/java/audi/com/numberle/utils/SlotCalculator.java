@@ -35,15 +35,14 @@ public class SlotCalculator {
     private List<String> slots = new ArrayList<>();
     private HashMap<Date, List<AppointmentUser>> appointments = new HashMap<>();
     private int ETA;
-    private Date date;
+    private Calendar date;
 
-    public SlotCalculator(Shop shop, int ETA, Date date, SlotCallback slotCallback, DatabaseReference database) {
+    public SlotCalculator(Shop shop, int ETA, Calendar date, SlotCallback slotCallback, DatabaseReference database) {
         this.shop = shop;
         this.ETA = ETA;
         this.date = date;
         this.mDatabase = database;
         this.slotCallback = slotCallback;
-
     }
 
 
@@ -67,7 +66,7 @@ public class SlotCalculator {
                     Constants.exception("Error Parsing Date", e);
                 }
                 if (slotCallback != null)
-                    slotCallback.gotSlots(slots);
+                    slotCallback.gotSlots(slots, false);
             }
 
             @Override
@@ -77,8 +76,12 @@ public class SlotCalculator {
         });
     }
 
-    public void setSlots() throws ParseException {
-        List<AppointmentUser> appointmentUsers = appointments.get(date);
+    public void setDate(Calendar date) {
+        this.date = date;
+    }
+
+    private void setSlots() throws ParseException {
+        List<AppointmentUser> appointmentUsers = appointments.get(date.getTimeInMillis());
         if (appointmentUsers == null)
             appointmentUsers = new ArrayList<>();
 
@@ -92,7 +95,15 @@ public class SlotCalculator {
         long parts = Mins / ETA;
         Calendar cal = Calendar.getInstance();
 
-        if (cal.get(Calendar.HOUR) + 2 < Date1.getHours())
+        //check if shop is closed
+        long nowMins = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE);
+        long closingMins = Date2.getHours() * 60 + Date2.getMinutes();
+        if (nowMins > closingMins) {
+            slotCallback.gotSlots(slots, true);
+            return;
+        }
+
+        if (cal.get(Calendar.DAY_OF_MONTH) <= date.get(Calendar.DAY_OF_MONTH) && cal.get(Calendar.HOUR) + 2 < Date1.getHours())
             cal.setTime(Date1);
         else
             cal.add(Calendar.HOUR_OF_DAY, 2);
@@ -157,7 +168,7 @@ public class SlotCalculator {
 //    }
 
     public interface SlotCallback {
-        void gotSlots(List<String> slots);
+        void gotSlots(List<String> slots, boolean isClosed);
     }
 
 }
