@@ -103,7 +103,7 @@ public class SlotCalculator {
             return;
         }
 
-        if (cal.get(Calendar.DAY_OF_MONTH) <= date.get(Calendar.DAY_OF_MONTH) && cal.get(Calendar.HOUR) + 2 < Date1.getHours())
+        if (cal.get(Calendar.DAY_OF_MONTH) <= date.get(Calendar.DAY_OF_MONTH) && cal.get(Calendar.HOUR_OF_DAY) + 2 < Date1.getHours())
             cal.setTime(Date1);
         else
             cal.add(Calendar.HOUR_OF_DAY, 2);
@@ -141,7 +141,9 @@ public class SlotCalculator {
             tempCal.add(Calendar.MINUTE, -ETA);
             String fromTime = format.format(tempCal.getTime());
 
-            if (cal.getTime().getTime() > Date2.getTime())
+            long currentTime = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE);
+            long closingTime = Date2.getHours() * 60 + Date2.getMinutes();
+            if (currentTime > closingTime)
                 break;
 
             slots.add(fromTime + "-" + toTime);
