@@ -7,4 +7,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="list_item_avatar_size">40dp</dimen>
     <dimen name="image_shop_logo">56dp</dimen>
+    <dimen name="widget_min_height">240dp</dimen>
+    <dimen name="widget_min_width">180dp</dimen>
 </resources>

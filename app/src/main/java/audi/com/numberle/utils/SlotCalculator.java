@@ -96,14 +96,14 @@ public class SlotCalculator {
         Calendar cal = Calendar.getInstance();
 
         //check if shop is closed
-        long nowMins = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE);
+        long nowMins = (cal.get(Calendar.HOUR_OF_DAY) + 2) * 60 + cal.get(Calendar.MINUTE);
         long closingMins = Date2.getHours() * 60 + Date2.getMinutes();
-        if (nowMins > closingMins) {
+        if (cal.get(Calendar.DAY_OF_MONTH) >= date.get(Calendar.DAY_OF_MONTH) && nowMins > closingMins) {
             slotCallback.gotSlots(slots, true);
             return;
         }
 
-        if (cal.get(Calendar.DAY_OF_MONTH) <= date.get(Calendar.DAY_OF_MONTH) && cal.get(Calendar.HOUR_OF_DAY) + 2 < Date1.getHours())
+        if (cal.get(Calendar.DAY_OF_MONTH) < date.get(Calendar.DAY_OF_MONTH))
             cal.setTime(Date1);
         else
             cal.add(Calendar.HOUR_OF_DAY, 2);
