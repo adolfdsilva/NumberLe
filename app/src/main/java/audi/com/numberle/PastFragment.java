@@ -22,6 +22,9 @@ public class PastFragment extends BaseFragment {
     private RecyclerView rvShops;
     private List<Appointment> past;
 
+    public PastFragment() {
+
+    }
 
     public PastFragment(List<Appointment> past) {
         this.past = past;

@@ -5,9 +5,19 @@ package audi.com.numberle.entity;
  */
 
 public class AppointmentUser {
+    private String key;
     private int ETA;
     private String slot;
     private long date;
+    private String shopLogo;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public int getETA() {
         return ETA;
@@ -31,5 +41,13 @@ public class AppointmentUser {
 
     public void setDate(long date) {
         this.date = date;
+    }
+
+    public String getShopLogo() {
+        return shopLogo;
+    }
+
+    public void setShopLogo(String shopLogo) {
+        this.shopLogo = shopLogo;
     }
 }

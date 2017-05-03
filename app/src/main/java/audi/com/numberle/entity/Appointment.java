@@ -8,7 +8,6 @@ public class Appointment {
     private String shopName;
     private AppointmentUser appointment;
 
-
     public String getShopName() {
         return shopName;
     }

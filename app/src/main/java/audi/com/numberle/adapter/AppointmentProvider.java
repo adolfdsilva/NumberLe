@@ -41,14 +41,18 @@ public class AppointmentProvider implements RemoteViewsService.RemoteViewsFactor
         this.intent = intent;
     }
 
+    public void setToday(List<Appointment> today) {
+        this.today = today;
+    }
+
     @Override
     public void onCreate() {
-        setUpUserAppointments();
+//        setUpUserAppointments();
     }
 
     @Override
     public void onDataSetChanged() {
-        setUpUserAppointments();
+//        setUpUserAppointments();
     }
 
     @Override
@@ -91,38 +95,5 @@ public class AppointmentProvider implements RemoteViewsService.RemoteViewsFactor
     }
 
 
-    private void setUpUserAppointments() {
-        Constants.debug("setUpUserAppointments");
-        final Calendar now = Calendar.getInstance();
-        final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null)
-            return;
-        Query userQuery = mDatabase.getRef().child(Constants.USERS).child(user.getUid());
-        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot shopAppointments : dataSnapshot.getChildren()) {
-                    String shopName = shopAppointments.getKey();
-                    Appointment appointment = new Appointment();
-                    appointment.setShopName(shopName);
-                    for (DataSnapshot appointSnapShot : shopAppointments.getChildren()) {
-                        AppointmentUser appointmentUser = appointSnapShot.getValue(AppointmentUser.class);
-                        appointment.setAppointment(appointmentUser);
-                        Calendar date = Calendar.getInstance();
-                        date.setTimeInMillis(appointmentUser.getDate());
-                        if (date.compareTo(now) == 0) {
-                            today.add(appointment);
-                        }
-                    }
-                }
-                Constants.debug(today.toString());
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 }

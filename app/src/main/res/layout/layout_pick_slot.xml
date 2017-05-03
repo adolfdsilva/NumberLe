@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,6 +14,7 @@
 
     <TextView
         android:id="@+id/tvSlot"
+        style="@style/TextPrimary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -21,11 +23,13 @@
         android:layout_weight="1"
         tools:text="1:30 - 3:30" />
 
-    <Button
+    <mehdi.sakout.fancybuttons.FancyButton
         android:id="@+id/bBook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:text="@string/button_book" />
-
+        android:layout_gravity="end|center_vertical"
+        fancy:fb_defaultColor="@color/md_green_800"
+        fancy:fb_focusColor="@color/md_red_800"
+        fancy:fb_radius="20dp"
+        fancy:fb_text="@string/button_book" />
 </LinearLayout>

@@ -34,7 +34,7 @@ public class RegisterActivity extends BaseActivity {
                 registerWithFireBase();
             }
         });
-    }
+        }
 
     private void registerWithFireBase() {
         mAuth.createUserWithEmailAndPassword(tvEmail.getText().toString(), tvPassword.getText().toString())

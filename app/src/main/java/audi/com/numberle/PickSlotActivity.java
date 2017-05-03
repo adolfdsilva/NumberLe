@@ -12,8 +12,12 @@ import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import audi.com.numberle.adapter.SlotsAdapter;
@@ -66,10 +70,23 @@ public class PickSlotActivity extends BaseActivity implements SlotCalculator.Slo
         adapter.setCallback(new SlotsAdapter.OnSlot() {
             @Override
             public void bookSlot(String slot) {
+                DateFormat format = new SimpleDateFormat("HH:mm");
+                Date date1 = null;
+                try {
+                    date1 = format.parse(slot.split("-")[0]);
+                } catch (ParseException e) {
+                    Constants.error("Error parsing slots");
+                    return;
+                }
+
+                int mins = (date1.getHours() * 60 - date1.getMinutes()) - (date.get(Calendar.HOUR_OF_DAY) * 60 + date.get(Calendar.MINUTE));
+                date.add(Calendar.MINUTE, mins);
+
                 AppointmentUser user = new AppointmentUser();
                 user.setETA(ETA);
                 user.setSlot(slot);
                 user.setDate(date.getTimeInMillis());
+                user.setShopLogo(shop.getLogo());
                 mDatabase.child(Constants.APPOINTMENTS).child(shop.getName()).push().setValue(user);
                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 Constants.debug(userID);

@@ -33,7 +33,7 @@ public class Constants {
         Log.w(TAG, "" + msg);
     }
 
-    public static void exception(String msg, ParseException e) {
+    public static void exception(String msg, Exception e) {
         Log.e(TAG, msg, e.getCause());
     }
 }

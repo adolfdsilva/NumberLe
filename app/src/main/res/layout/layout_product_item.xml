@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:background="@color/white_ish"
+    android:orientation="horizontal"
     android:padding="16dp">
 
     <LinearLayout
@@ -17,12 +17,14 @@
 
         <TextView
             android:id="@+id/tvProductName"
+            style="@style/TextPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Hair Spa" />
 
         <TextView
             android:id="@+id/tvProductETAPrice"
+            style="@style/TextSecondary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Rs.1200     40min" />

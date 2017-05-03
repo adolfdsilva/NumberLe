@@ -13,19 +13,25 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import audi.com.numberle.entity.Appointment;
 import audi.com.numberle.entity.AppointmentUser;
@@ -36,14 +42,13 @@ import br.com.mauker.materialsearchview.db.HistoryContract;
 
 public class HomeActivity extends BaseActivity {
 
-
     private DrawerLayout mDrawerLayout;
     private MaterialSearchView searchView;
     private List<Object> shops = new ArrayList<>();
     private Calendar now, tomorrow;
     private List<Appointment> today = new ArrayList<>();
     private List<Appointment> past = new ArrayList<>();
-    private List<Appointment> upcomming = new ArrayList<>();
+    private List<Appointment> upcoming = new ArrayList<>();
     private Adapter fragmentAdapter;
     private ViewPager viewPager;
 
@@ -56,7 +61,6 @@ public class HomeActivity extends BaseActivity {
         init();
 
         setUpUserAppointments();
-
 
         Query query = mDatabase.getRef().child(Constants.SHOP);
         query.addValueEventListener(new ValueEventListener() {
@@ -98,17 +102,18 @@ public class HomeActivity extends BaseActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot shopAppointments : dataSnapshot.getChildren()) {
                     String shopName = shopAppointments.getKey();
-                    Appointment appointment = new Appointment();
-                    appointment.setShopName(shopName);
                     for (DataSnapshot appointSnapShot : shopAppointments.getChildren()) {
+                        Appointment appointment = new Appointment();
+                        appointment.setShopName(shopName);
                         AppointmentUser appointmentUser = appointSnapShot.getValue(AppointmentUser.class);
                         appointment.setAppointment(appointmentUser);
+                        appointmentUser.setKey(appointSnapShot.getKey());
                         Calendar date = Calendar.getInstance();
                         date.setTimeInMillis(appointmentUser.getDate());
                         if (date.compareTo(now) < 0) {
                             past.add(appointment);
                         } else if (date.compareTo(tomorrow) > 0) {
-                            upcomming.add(appointment);
+                            upcoming.add(appointment);
                         } else {
                             today.add(appointment);
                         }
@@ -184,8 +189,8 @@ public class HomeActivity extends BaseActivity {
 
         fragmentAdapter = new Adapter(getSupportFragmentManager());
 
-        fragmentAdapter.addFragment(new TodayFragment(today), "Today");
-        fragmentAdapter.addFragment(new UpcomingFragment(upcomming), "Upcoming");
+        fragmentAdapter.addFragment(new TodayFragment(today, mDatabase, user), "Today");
+        fragmentAdapter.addFragment(new UpcomingFragment(upcoming, mDatabase, user), "Upcoming");
         fragmentAdapter.addFragment(new PastFragment(past), "Past");
 
         viewPager.setAdapter(fragmentAdapter);
@@ -196,11 +201,24 @@ public class HomeActivity extends BaseActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        menuItem.setChecked(true);
-                        mDrawerLayout.closeDrawers();
+                        switch (menuItem.getItemId()) {
+                            case R.id.bLogout:
+                                menuItem.setChecked(true);
+                                mDrawerLayout.closeDrawers();
+                                FirebaseAuth.getInstance().signOut();
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                        }
                         return true;
                     }
                 });
+        View header = navigationView.getHeaderView(0);
+
+        ((TextView) header.findViewById(R.id.tvUsername)).setText(user.getEmail());
+        ImageView ivProfile = ((ImageView) header.findViewById(R.id.ivProfile));
+        Picasso.with(this).load(user.getPhotoUrl()).into(ivProfile);
     }
 
     @Override
@@ -241,4 +259,6 @@ public class HomeActivity extends BaseActivity {
             return mFragmentTitles.get(position);
         }
     }
+
+
 }

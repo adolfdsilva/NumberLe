@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import audi.com.numberle.R;
@@ -79,10 +81,6 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.ViewHolder> 
             }
         });
 
-//        Glide.with(holder.ivShopLogo.getContext())
-//                .load(Cheeses.getRandomCheeseDrawable())
-//                .fitCenter()
-//                .into(holder.ivShopLogo);
     }
 
     @Override

@@ -15,8 +15,9 @@ public class Shop implements Parcelable{
     private String desc;
     private String location;
     private String operation_hours;
-    private String banner;
     private List<Product> products ;
+    private String banner;
+    private String logo;
 
     {
         products = new ArrayList<>();
@@ -32,6 +33,7 @@ public class Shop implements Parcelable{
         location = in.readString();
         operation_hours = in.readString();
         banner = in.readString();
+        logo = in.readString();
     }
 
     public static final Creator<Shop> CREATOR = new Creator<Shop>() {
@@ -45,6 +47,14 @@ public class Shop implements Parcelable{
             return new Shop[size];
         }
     };
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
 
     public String getDesc() {
         return desc;
@@ -111,6 +121,7 @@ public class Shop implements Parcelable{
         dest.writeString(location);
         dest.writeString(operation_hours);
         dest.writeString(banner);
+        dest.writeString(logo);
     }
 
     public static class Product {

@@ -17,13 +17,10 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_settings"
-            android:title="@string/button_settings" />
-        <item
-            android:id="@+id/nav_messages"
-            android:icon="@drawable/ic_favorite"
-            android:title="@string/button_favorites" />
+            android:id="@+id/bLogout"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/button_logout" />
+
     </group>
 
 </menu>

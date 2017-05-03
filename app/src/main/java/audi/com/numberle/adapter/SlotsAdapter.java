@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import audi.com.numberle.R;
+import mehdi.sakout.fancybuttons.FancyButton;
 
 /**
  * Created by Audi on 02/04/17.
@@ -29,13 +30,13 @@ public class SlotsAdapter extends RecyclerView.Adapter<SlotsAdapter.ViewHolder> 
 
         public final View mView;
         public final TextView tvSlot;
-        public final Button bBook;
+        public final FancyButton bBook;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             tvSlot = (TextView) view.findViewById(R.id.tvSlot);
-            bBook = (Button) view.findViewById(R.id.bBook);
+            bBook = (FancyButton) view.findViewById(R.id.bBook);
         }
 
         @Override

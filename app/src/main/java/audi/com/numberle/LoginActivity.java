@@ -103,8 +103,6 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
             public void onError(FacebookException error) {
             }
         });
-
-
     }
 
     private void signInWithFireBase() {
@@ -132,18 +130,15 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions("email", "public_profile");
 
-
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
-
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
     }
 
 
@@ -157,6 +152,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                 GoogleSignInAccount account = result.getSignInAccount();
                 fireBaseAuthWithGoogle(account);
             } else {
+                Constants.error("Google result failed " + result.getStatus().getStatusMessage());
             }
         } else {
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
@@ -184,6 +180,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
+                            Constants.exception("Fb sign in failed: " , task.getException());
                             Toast.makeText(getApplicationContext(), getString(R.string.toast_auth_failed),
                                     Toast.LENGTH_SHORT).show();
                         }
