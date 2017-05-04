@@ -112,11 +112,11 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Constants.debug("signInWithEmail:onComplete:" + task.isSuccessful());
                         if (!task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.toast_auth_failed), Toast.LENGTH_LONG).show();
                             Constants.debug("signInWithEmail:failed" + task.getException());
                         } else {
                             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         }
-
                     }
                 });
     }
@@ -180,7 +180,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            Constants.exception("Fb sign in failed: " , task.getException());
+                            Constants.exception("Fb sign in failed: ", task.getException());
                             Toast.makeText(getApplicationContext(), getString(R.string.toast_auth_failed),
                                     Toast.LENGTH_SHORT).show();
                         }

@@ -128,7 +128,7 @@ public class Shop implements Parcelable{
 
         private String productName;
         private double price;
-        private double ETA;
+        private int ETA;
 
         public String getProductName() {
             return productName;
@@ -146,11 +146,11 @@ public class Shop implements Parcelable{
             this.price = price;
         }
 
-        public double getETA() {
+        public int getETA() {
             return ETA;
         }
 
-        public void setETA(double ETA) {
+        public void setETA(int ETA) {
             this.ETA = ETA;
         }
 

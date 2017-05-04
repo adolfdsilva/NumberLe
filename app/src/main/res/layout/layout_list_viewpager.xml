@@ -53,6 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
+        android:contentDescription="@string/desc_search_shops"
         android:src="@drawable/ic_search" />
 
 </android.support.design.widget.CoordinatorLayout>

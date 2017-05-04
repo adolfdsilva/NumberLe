@@ -72,7 +72,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Shop.Product product = mValues.get(position);
         holder.tvProductName.setText(product.getProductName());
-        holder.tvProductETAPrice.setText(product.getPrice() + "\t" + product.getETA());
+        holder.tvProductETAPrice.setText(product.getPrice() + "\t" + product.getETA() + "min");
 
         holder.bAdd.setOnClickListener(new View.OnClickListener() {
             @Override

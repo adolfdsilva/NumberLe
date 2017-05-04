@@ -34,4 +34,5 @@
     <string name="desc_shop_location_on_map">Shop Location On Map</string>
     <string name="desc_shop_logo">Shop Logo</string>
     <string name="text_no_appointments">No Appointments For Today</string>
+    <string name="desc_done">Done</string>
 </resources>

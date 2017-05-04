@@ -44,7 +44,6 @@ public class AppointmentProvider implements RemoteViewsService.RemoteViewsFactor
 
 
     private void setUpUserAppointments() {
-        final List<Appointment> today = new ArrayList<>();
         Constants.debug("setUpUserAppointments");
         final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -74,7 +73,6 @@ public class AppointmentProvider implements RemoteViewsService.RemoteViewsFactor
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Constants.exception("Error: ", databaseError.toException());
-
             }
         });
     }
@@ -125,6 +123,4 @@ public class AppointmentProvider implements RemoteViewsService.RemoteViewsFactor
     public boolean hasStableIds() {
         return true;
     }
-
-
 }
