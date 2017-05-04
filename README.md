@@ -4,12 +4,14 @@ Number le is an app which tries to eliminate the queues by giving each customer 
 so that the customer can visit the place when it is his turn. 
 This project however focuses only on barber shops.
 
-==================================================
 Features
-==================================================
-⦁	Saves time.
-⦁	Makes queuing more systematic.
-⦁	Notifies the user about his appointment
+
+  ⦁	Saves time.
+
+  ⦁	Makes queuing more systematic.
+
+  ⦁	Notifies the user about his appointment.
+
 
 
 All the data will be synchronized with the server. The app will fetch data from server using firebase.
