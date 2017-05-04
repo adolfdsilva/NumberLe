@@ -10,7 +10,8 @@
         android:id="@+id/ivShopLogo"
         android:layout_width="@dimen/image_shop_logo"
         android:layout_height="@dimen/image_shop_logo"
-        tools:src="@drawable/google_logo" />
+        tools:src="@drawable/google_logo"
+        android:contentDescription="@string/desc_shop_logo" />
 
     <LinearLayout
         android:layout_width="0dp"

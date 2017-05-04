@@ -46,9 +46,9 @@ public class HomeActivity extends BaseActivity {
     private MaterialSearchView searchView;
     private List<Object> shops = new ArrayList<>();
     private Calendar now, tomorrow;
-    private List<Appointment> today = new ArrayList<>();
-    private List<Appointment> past = new ArrayList<>();
-    private List<Appointment> upcoming = new ArrayList<>();
+    private ArrayList<Appointment> today = new ArrayList<>();
+    private ArrayList<Appointment> past = new ArrayList<>();
+    private ArrayList<Appointment> upcoming = new ArrayList<>();
     private Adapter fragmentAdapter;
     private ViewPager viewPager;
 
@@ -189,9 +189,24 @@ public class HomeActivity extends BaseActivity {
 
         fragmentAdapter = new Adapter(getSupportFragmentManager());
 
-        fragmentAdapter.addFragment(new TodayFragment(today, mDatabase, user), "Today");
-        fragmentAdapter.addFragment(new UpcomingFragment(upcoming, mDatabase, user), "Upcoming");
-        fragmentAdapter.addFragment(new PastFragment(past), "Past");
+        Bundle todayBundle = new Bundle();
+        todayBundle.putParcelableArrayList(Constants.APPOINTMENTS, today);
+        TodayFragment todayFragment = new TodayFragment();
+        todayFragment.setArguments(todayBundle);
+
+        Bundle upcomingBundle = new Bundle();
+        upcomingBundle.putParcelableArrayList(Constants.APPOINTMENTS, upcoming);
+        UpcomingFragment upcomingFragment = new UpcomingFragment();
+        upcomingFragment.setArguments(upcomingBundle);
+
+        Bundle pastBundle = new Bundle();
+        pastBundle.putParcelableArrayList(Constants.APPOINTMENTS, past);
+        PastFragment pastFragment = new PastFragment();
+        pastFragment.setArguments(pastBundle);
+
+        fragmentAdapter.addFragment(todayFragment, "Today");
+        fragmentAdapter.addFragment(upcomingFragment, "Upcoming");
+        fragmentAdapter.addFragment(pastFragment, "Past");
 
         viewPager.setAdapter(fragmentAdapter);
     }

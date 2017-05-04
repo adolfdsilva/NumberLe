@@ -2,6 +2,7 @@ package audi.com.numberle.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -41,18 +42,50 @@ public class AppointmentProvider implements RemoteViewsService.RemoteViewsFactor
         this.intent = intent;
     }
 
-    public void setToday(List<Appointment> today) {
-        this.today = today;
+
+    private void setUpUserAppointments() {
+        final List<Appointment> today = new ArrayList<>();
+        Constants.debug("setUpUserAppointments");
+        final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null)
+            return;
+        Query userQuery = mDatabase.getRef().child(Constants.USERS).child(user.getUid());
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot shopAppointments : dataSnapshot.getChildren()) {
+                    String shopName = shopAppointments.getKey();
+                    Appointment appointment = new Appointment();
+                    appointment.setShopName(shopName);
+                    for (DataSnapshot appointSnapShot : shopAppointments.getChildren()) {
+                        AppointmentUser appointmentUser = appointSnapShot.getValue(AppointmentUser.class);
+                        appointment.setAppointment(appointmentUser);
+                        Calendar date = Calendar.getInstance();
+                        date.setTimeInMillis(appointmentUser.getDate());
+                        if (DateUtils.isToday(date.getTimeInMillis())) {
+                            today.add(appointment);
+                        }
+                    }
+                }
+                Constants.debug(today.toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Constants.exception("Error: ", databaseError.toException());
+
+            }
+        });
     }
 
     @Override
     public void onCreate() {
-//        setUpUserAppointments();
     }
 
     @Override
     public void onDataSetChanged() {
-//        setUpUserAppointments();
+        setUpUserAppointments();
     }
 
     @Override
@@ -67,8 +100,7 @@ public class AppointmentProvider implements RemoteViewsService.RemoteViewsFactor
     @Override
     public RemoteViews getViewAt(int i) {
         Appointment appointment = today.get(i);
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.layout_appointment_item);
-        remoteViews.setViewVisibility(R.id.bCancel, View.GONE);
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.layout_widget_item);
         remoteViews.setTextViewText(R.id.tvShopName, appointment.getShopName());
         remoteViews.setTextViewText(R.id.tvAppointTime, appointment.getAppointment().getSlot());
         return remoteViews;
@@ -93,7 +125,6 @@ public class AppointmentProvider implements RemoteViewsService.RemoteViewsFactor
     public boolean hasStableIds() {
         return true;
     }
-
 
 
 }

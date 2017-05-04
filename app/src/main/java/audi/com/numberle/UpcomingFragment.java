@@ -25,23 +25,11 @@ public class UpcomingFragment extends BaseFragment {
 
     private RecyclerView rvShops;
     private List<Appointment> upcoming;
-    private DatabaseReference mDatabase;
-    private FirebaseUser user;
-
-    public UpcomingFragment() {
-
-    }
-
-    public UpcomingFragment(List<Appointment> upcoming, DatabaseReference mDatabase, FirebaseUser user) {
-        this.upcoming = upcoming;
-        this.mDatabase = mDatabase;
-        this.user = user;
-    }
-
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        upcoming = getArguments().getParcelableArrayList(Constants.APPOINTMENTS);
         rvShops = (RecyclerView) inflater.inflate(R.layout.recycler_view_shops, container, false);
         setupRecyclerView(rvShops);
         return rvShops;

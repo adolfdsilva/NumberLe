@@ -43,6 +43,7 @@
                 android:id="@+id/backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/desc_shop_banner"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax" />
@@ -61,9 +62,9 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvShopProducts"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/bDone"
@@ -72,6 +73,7 @@
         android:layout_gravity="bottom"
         android:layout_margin="@dimen/fab_margin"
         android:clickable="true"
+        android:contentDescription="@string/desc_search_shops"
         android:src="@drawable/ic_done" />
 
 </android.support.design.widget.CoordinatorLayout>

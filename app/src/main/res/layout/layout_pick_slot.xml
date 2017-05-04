@@ -10,7 +10,8 @@
     <ImageView
         android:layout_width="@dimen/image_shop_logo"
         android:layout_height="@dimen/image_shop_logo"
-        android:src="@drawable/ic_action_clock" />
+        android:src="@drawable/ic_action_clock"
+        android:contentDescription="@string/desc_slot_image" />
 
     <TextView
         android:id="@+id/tvSlot"

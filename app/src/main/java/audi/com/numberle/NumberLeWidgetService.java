@@ -1,8 +1,10 @@
 package audi.com.numberle;
 
 import android.content.Intent;
+import android.text.format.DateUtils;
 import android.widget.RemoteViewsService;
 
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -15,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 import audi.com.numberle.adapter.AppointmentProvider;
 import audi.com.numberle.entity.Appointment;
@@ -30,47 +33,8 @@ public class NumberLeWidgetService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        setUpUserAppointments();
         appointmentProvider = new AppointmentProvider(this, intent);
         return appointmentProvider;
 
-    }
-
-    private void setUpUserAppointments() {
-        final List<Appointment> today = new ArrayList<>();
-        Constants.debug("setUpUserAppointments");
-        final Calendar now = Calendar.getInstance();
-        final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null)
-            return;
-        Query userQuery = mDatabase.getRef().child(Constants.USERS).child(user.getUid());
-        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot shopAppointments : dataSnapshot.getChildren()) {
-                    String shopName = shopAppointments.getKey();
-                    Appointment appointment = new Appointment();
-                    appointment.setShopName(shopName);
-                    for (DataSnapshot appointSnapShot : shopAppointments.getChildren()) {
-                        AppointmentUser appointmentUser = appointSnapShot.getValue(AppointmentUser.class);
-                        appointment.setAppointment(appointmentUser);
-                        Calendar date = Calendar.getInstance();
-                        date.setTimeInMillis(appointmentUser.getDate());
-                        if (date.compareTo(now) == 0) {
-                            today.add(appointment);
-                        }
-                    }
-                }
-                Constants.debug(today.toString());
-                appointmentProvider.setToday(today);
-                appointmentProvider.onDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 }

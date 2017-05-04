@@ -24,7 +24,8 @@
         android:layout_marginStart="8dp"
         android:background="@android:color/transparent"
         android:padding="8dp"
-        android:src="@drawable/ic_location_on" />
+        android:src="@drawable/ic_location_on"
+        android:contentDescription="@string/desc_shop_location_on_map" />
 
 
 </LinearLayout>

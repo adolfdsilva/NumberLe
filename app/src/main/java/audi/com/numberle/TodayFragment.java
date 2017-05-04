@@ -1,5 +1,6 @@
 package audi.com.numberle;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -25,22 +27,11 @@ public class TodayFragment extends BaseFragment {
 
     private RecyclerView rvShops;
     private List<Appointment> today;
-    private DatabaseReference mDatabase;
-    private FirebaseUser user;
-
-    public TodayFragment(){
-
-    }
-
-    public TodayFragment(List<Appointment> today, DatabaseReference mDatabase, FirebaseUser user) {
-        this.mDatabase = mDatabase;
-        this.today = today;
-        this.user = user;
-    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        today = getArguments().getParcelableArrayList(Constants.APPOINTMENTS);
         rvShops = (RecyclerView) inflater.inflate(R.layout.recycler_view_shops, container, false);
         setupRecyclerView(rvShops);
         return rvShops;

@@ -61,6 +61,7 @@ public class NumberLeWidgetProvider extends AppWidgetProvider {
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private static void setRemoteAdapter(Context context, @NonNull final RemoteViews views) {
         Constants.debug("setRemoteAdapter Called");
+        views.setEmptyView(R.id.listViewWidget, R.id.tvEmptyView);
         views.setRemoteAdapter(R.id.listViewWidget,
                 new Intent(context, NumberLeWidgetService.class));
     }
